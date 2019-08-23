@@ -25,7 +25,10 @@ class NeuralNetwork(nn.Module):
         super(NeuralNetwork, self).__init__()
 
     def get_device(self):
-        return "cpu"
+        if next(self.parameters()).device == "cpu":
+            return "cpu"
+        else:
+            return next(self.parameters()).device.index
 
     def set_device(self, device):
         if device == "cpu":
