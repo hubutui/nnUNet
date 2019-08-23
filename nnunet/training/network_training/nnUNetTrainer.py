@@ -237,7 +237,8 @@ class nnUNetTrainer(NetworkTrainer):
                                                            patience=self.lr_scheduler_patience,
                                                            verbose=True, threshold=self.lr_scheduler_eps,
                                                            threshold_mode="abs")
-        self.network.cuda()
+        if torch.cuda.is_available():
+            self.network.cuda()
 
         self.network.inference_apply_nonlin = softmax_helper
 

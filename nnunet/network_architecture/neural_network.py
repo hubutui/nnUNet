@@ -25,10 +25,10 @@ class NeuralNetwork(nn.Module):
         super(NeuralNetwork, self).__init__()
 
     def get_device(self):
-        if next(self.parameters()).device == "cpu":
-            return "cpu"
+        if torch.cuda.is_available():
+            return "cuda"
         else:
-            return next(self.parameters()).device.index
+            return "cpu"
 
     def set_device(self, device):
         if device == "cpu":
