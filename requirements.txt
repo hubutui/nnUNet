@@ -1,5 +1,3 @@
-torch
-torchvision
 tqdm
 dicom2nifti
 scikit-image>=0.14

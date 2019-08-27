@@ -1,19 +1,23 @@
+#!/usr/bin/env python3
+#
 import os
+import os.path as osp
+import shutil
 
-inputDir = os.getenv("INPUTDIR")
-count = 0
 
-# Nifti files are expected to be placed within INPUTDIR. 
-# They will be renamed to match the naming pattern. 
-print("Start renaming ...")
-for filename in os.listdir(inputDir):
-    old_path = os.path.join(inputDir, filename)
+if __name__ == '__main__':
+    count = 0
+    inputDir = os.getenv("INPUTDIR")
+    if not osp.exists('/tmpdir'):
+        os.makedirs('/tmpdir')
 
-    if (os.path.isfile(old_path)):
-        new_path = os.path.join(inputDir, "dcm{}_0000.nii.gz".format(count))
-        print("Copy {0} to {1} ...".format(old_path, new_path))
-        os.rename(old_path, new_path)
-        count +=1
-
-print("{} files processed".format(count))
-print("...Renaming finished.")
+    print("start renaming...")
+    for filename in os.listdir(inputDir):
+        oldpath = osp.join(inputDir, filename)
+        if osp.isfile(oldpath):
+            newpath = osp.join('tmpdir', filename.replace('.nii.gz', '_seg_0000.nii.gz'))
+            print('copy {} to {}'.format(oldpath, newpath))
+            shutil.copyfile(oldpath, newpath)
+            count += 1
+    print("{} files processed".format(count))
+    print("Done")

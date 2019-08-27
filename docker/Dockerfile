@@ -1,24 +1,18 @@
-FROM nvidia/cuda:10.0-runtime-ubuntu18.04
+FROM ufoym/deepo:pytorch
 
-RUN apt-get update -y && apt-get install -y \
- python3.6 \
- python3-pip \
- curl \
- git
+COPY nnUNet /nnUNet
+RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/' /etc/apt/sources.list && \
+	sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/' /etc/apt/sources.list && \
+	apt update && apt install parallel -y && rm -vrf /var/lib/apt/lists/* && \
+	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
+	cd nnUNet && pip install -r requirements.txt && pip install -e .
 
-RUN pip3 install numpy && \
-  pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp36-cp36m-linux_x86_64.whl
+ENV INPUTDIR "/data"
+ENV OUTPUTDIR "/data/results"
+ENV THREADS 16
+ENV JOBS 4
+ENV TASK_NAME "Task19_DeepSpine"
+ENV MODELS_DIR "/models"
+WORKDIR "/"
 
-RUN git clone https://github.com/MIC-DKFZ/nnUNet.git
-RUN cd nnUNet && pip3 install -r requirements.txt && pip3 install -e .
-
-COPY predict.sh /
-COPY rename_input.py /
-
-ENV INPUTDIR "/opt/input/"
-ENV OUTPUTDIR "/opt/output/"
-ENV RESULTS_FOLDER "/opt/results/"
-
-RUN mkdir ${RESULTS_FOLDER}
-
-ENTRYPOINT [ "/predict.sh" ]
+ENTRYPOINT [ "/nnUNet/docker/run.sh" ]
