@@ -48,3 +48,12 @@ docker run --runtime=nvidia -v datadir:/data -v modelsdir:/models -itd --rm deep
 ```
 
 change `datadir` and `modelsdir` to corresponding dir.
+
+Our model is available at [google drive](https://drive.google.com/drive/folders/1qUeirPB6af9nB0zxfvUjMguDPI021TDp?usp=sharing), download the models and extract to `modelsdir`. By default, this docker image use entrypoint `/nnUNet/docker/run-all.sh` to run inference using ensemble of 2D U-Net, 3D low resolution U-Net, and 3D full resolution U-Net. To use the ensemble without 3D low resolution U-Net in case you got memory error due to numpy issue, you could specify option `–-entrypoint /nnUNet/docker/run.sh`.
+
+Our docker image is available at [DockerHub](https://hub.docker.com/r/butui/deepspine). You could pull it by:
+
+```shell
+docker pull butui/deepspine
+```
+

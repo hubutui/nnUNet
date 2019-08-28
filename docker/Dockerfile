@@ -15,4 +15,4 @@ ENV TASK_NAME "Task19_DeepSpine"
 ENV MODELS_DIR "/models"
 WORKDIR "/"
 
-ENTRYPOINT [ "/nnUNet/docker/run.sh" ]
+ENTRYPOINT [ "/nnUNet/docker/run-all.sh" ]
