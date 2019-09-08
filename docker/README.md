@@ -1,6 +1,6 @@
 ## nnUNet Docker Container (Inference)
 
-This container takes the [MIC-DKFZ/nnUNet](https://github.com/MIC-DKFZ/nnUNet) code and inherits from a `ufoym/deepo:pytorch` Docker image. This container is supposed to run inference only, both CPU and GPU mode for VerSe 2019 challenge. To run with GPU, you need to install and configure [nvidia-container-runtime](https://github.com/NVIDIA/nvidia-container-runtime).
+This container takes the [nnUNet](https://github.com/hubutui/nnUNet) code and inherits from a `ufoym/deepo:pytorch` Docker image. This container is supposed to run inference only, both CPU and GPU mode for VerSe 2019 challenge. To run with GPU, you need to install and configure [nvidia-container-runtime](https://github.com/NVIDIA/nvidia-container-runtime).
 
 ## Build the image
 
