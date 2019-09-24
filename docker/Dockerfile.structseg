@@ -1,0 +1,20 @@
+FROM structseg:base
+
+ARG FOLD_build=0
+ARG TASK_NAME_build="Task01_HaNOAR"
+ARG MODELS_DIR_build="structseg-models"
+ARG MODEL_build="2d"
+ENV THREADS=16
+ENV FOLD=$FOLD_build
+ENV TASK_NAME=$TASK_NAME_build
+ENV MODEL=$MODEL_build
+
+COPY nnUNet /nnUNet
+COPY nnUNet/docker/Segmentation.py /StructSeg/Segmentation.py
+RUN cd /nnUNet \
+	&& pip install --no-cache-dir -e . 
+COPY $MODELS_DIR_build /models
+
+WORKDIR "/"
+
+ENTRYPOINT [ "/StructSeg/Segmentation.py" ]

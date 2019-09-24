@@ -16,6 +16,7 @@ import argparse
 from nnunet.inference.predict import predict_from_folder
 from nnunet.paths import default_plans_identifier, network_training_output_dir
 from batchgenerators.utilities.file_and_folder_operations import join, isdir
+import os
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -84,6 +85,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     input_folder = args.input_folder
     output_folder = args.output_folder
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     part_id = args.part_id
     num_parts = args.num_parts
     folds = args.folds

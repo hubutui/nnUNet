@@ -122,8 +122,8 @@ def predict_cases(model, list_of_lists, output_filenames, folds, save_npz, num_t
     assert len(list_of_lists) == len(output_filenames)
     if segs_from_prev_stage is not None: assert len(segs_from_prev_stage) == len(output_filenames)
 
-    prman = Pool(num_threads_nifti_save)
-    results = []
+    # prman = Pool(num_threads_nifti_save)
+    # results = []
 
     cleaned_output_files = []
     for o in output_filenames:
@@ -146,8 +146,8 @@ def predict_cases(model, list_of_lists, output_filenames, folds, save_npz, num_t
 
         print("number of cases that still need to be predicted:", len(cleaned_output_files))
 
-    print("emptying cuda cache")
-    torch.cuda.empty_cache()
+#    print("emptying cuda cache")
+#    torch.cuda.empty_cache()
 
     print("loading parameters for folds,", folds)
     trainer, params = load_model_and_checkpoint_files(model, folds)
@@ -191,16 +191,17 @@ def predict_cases(model, list_of_lists, output_filenames, folds, save_npz, num_t
         patching system python code. We circumvent that problem here by saving softmax_pred to a npy file that will 
         then be read (and finally deleted) by the Process. save_segmentation_nifti_from_softmax can take either 
         filename or np.ndarray and will handle this automatically"""
-        if np.prod(softmax_mean.shape) > (2e9 / 4 * 0.9):  # *0.9 just to be save
-            print("This output is too large for python process-process communication. Saving output temporarily to disk")
-            np.save(output_filename[:-7] + ".npy", softmax_mean)
-            softmax_mean = output_filename[:-7] + ".npy"
+#        if np.prod(softmax_mean.shape) > (2e9 / 4 * 0.9):  # *0.9 just to be save
+#            print("This output is too large for python process-process communication. Saving output temporarily to disk")
+#            np.save(output_filename[:-7] + ".npy", softmax_mean)
+#            softmax_mean = output_filename[:-7] + ".npy"
 
-        results.append(prman.starmap_async(save_segmentation_nifti_from_softmax,
-                                           ((softmax_mean, output_filename, dct, 1, None, None, None, npz_file), )
-                                           ))
+        # results.append(prman.starmap_async(save_segmentation_nifti_from_softmax,
+        #                                    ((softmax_mean, output_filename, dct, 1, None, None, None, npz_file), )
+        #                                    ))
+        save_segmentation_nifti_from_softmax(softmax_mean, output_filename, dct, 1, None, None, None, npz_file)
 
-    _ = [i.get() for i in results]
+    # _ = [i.get() for i in results]
 
 
 def predict_from_folder(model, input_folder, output_folder, folds, save_npz, num_threads_preprocessing,

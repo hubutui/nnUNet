@@ -1,0 +1,9 @@
+FROM pytorch/pytorch:0.4.1-cuda9-cudnn7-devel
+# use tuna mirrors
+# COPY nnUNet/docker/tuna.list /etc/apt/sources.list
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install parallel -y \
+	&& rm -rfv /var/lib/apt/lists/* \
+	&& pip install --no-cache-dir tqdm dicom2nifti scikit-image>=0.14 medpy \
+	batchgenerators>=0.19.3 sklearn SimpleITK pandas 
+
+ENTRYPOINT [ "/bin/bash" ]

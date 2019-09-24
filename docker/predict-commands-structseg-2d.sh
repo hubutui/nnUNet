@@ -1,0 +1,1 @@
+OMP_NUM_THREADS=1 RESULTS_FOLDER=$MODELS_DIR python nnUNet/nnunet/inference/predict_simple.py -i /tmpdir -t $TASK_NAME -tr nnUNetTrainer --num_threads_preprocessing $THREADS --num_threads_nifti_save $THREADS -m 2d -f $FOLD -o $INTERDIR --tta 0
