@@ -2,7 +2,8 @@
 
 This container takes the [nnUNet](https://github.com/hubutui/nnUNet) code and inherits from a `pytorch:pytorch` Docker image. This container is supposed to run inference only, both CPU and GPU mode for VerSe 2019 challenge. To run with GPU, you need to install and configure [nvidia-container-runtime](https://github.com/NVIDIA/nvidia-container-runtime).
 
-## Build the image
+## For MICCAI 2019 VerSe challenge
+### Build the image
 
 To build the docker image, you need to run this command in `nnUNet`'s parent directory:
 
@@ -12,7 +13,7 @@ docker docker build . -f nnUNet/docker/Dockerfile -t deepspine
 
 To avoid send a large context files and directories when building docker image, you should put the whole `nnUNet` folder to an empty folder.
 
-### Environment-Parameters
+#### Environment-Parameters
 > - `INPUTDIR`: dir path to the input folder containing the compressed nifti files (nii.gz):
 > ```
 > /data/
@@ -33,7 +34,7 @@ To avoid send a large context files and directories when building docker image, 
 ___
 You may want to change data loading or output structuring. This shows an example for VerSe 2019 challenge.
 
-## Run it
+### Run it
 
 Simply run:
 
@@ -57,3 +58,18 @@ Our docker image is available at [DockerHub](https://hub.docker.com/r/butui/deep
 docker pull butui/deepspine
 ```
 
+## For MICCAI 2019 StructSeg challenge
+### build the image
+For convenient, I build a base Docker image with [Dockerfile.base](Dockerfile.base), which install the necessary package for nnUNet. This base image is build from `pytorch/pytorch:0.4.1-cuda9-cudnn7-devel`. The organizer only accept CUDA 9.0, so we use this image as base. You are free to use newer version of PyTorch and CUDA if needed. To build this base image, run:
+
+```shell
+docker build -t structseg:base -f Dockerfile.base .
+```
+
+We assume you have build a base image tagged `structseg:base` from now on. Then we could build the image for each task. You should run this command in parent directory of `nnUNet`:
+
+```shell
+docker build -t structseg:USERNAME_task1 -f nnUNet/docker/Dockerfile.structseg --build-arg TASK_NAME_build=Task01_HaNOAR --build-arg FOLD_build=1 --build-arg MODELS_DIR_build=structseg-models --build-arg MODEL_build=3d_fullres .
+```
+
+Modify the `ARG` and `ENV` according to yours. For submission, I copy the trained models into the Docker image. You might consider comment out line 16 in [Dockerfile.sturctseg](Dockerfile.structseg), and simply mount the model directory to the Docker container when you run your Docker container. The `ENTRYPOINT` is required by the organizer, we run script `run-structseg.sh` in fact. And due to time and GPU memory limitation, we don't use ensemble scheme.  You might consider using ensemble to improve performance.

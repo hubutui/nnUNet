@@ -12,10 +12,12 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
-from batchgenerators.utilities.file_and_folder_operations import *
-import numpy as np
+import os
 from multiprocessing import Pool
+
+import numpy as np
+from batchgenerators.utilities.file_and_folder_operations import *
+from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
 
 
 def merge_files(args):
@@ -63,6 +65,7 @@ def merge(folders, output_folder, threads, override=True):
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(description="This requires that all folders to be merged use the same "
                                                  "postprocessing function "
                                                  "(nnunet.utilities.postprocessing.postprocess_segmentation). "
@@ -87,5 +90,6 @@ if __name__ == "__main__":
     folders = args.folders
     threads = args.threads
     output_folder = args.output_folder
+    os.makedirs(output_folder, exist_ok=True)
 
     merge(folders, output_folder, threads, override=True)

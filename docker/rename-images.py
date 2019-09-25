@@ -17,8 +17,7 @@ def getargs():
 
 if __name__ == '__main__':
     args = getargs()
-    if not osp.exists(args.outputdir):
-        os.makedirs(args.outputdir)
+    os.makedirs(args.outputdir, exist_ok=True)
     for patient in os.listdir(args.inputdir):
         print("rename {} to {}...".format(osp.join(args.inputdir, patient, 'data.nii.gz'),
                                           osp.join(args.outputdir, "{}-data_0000.nii.gz".format(patient))))

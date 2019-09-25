@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
+#
+import argparse
 import os
 import os.path as osp
-import argparse
 import shutil
 
 
@@ -17,18 +18,13 @@ def getargs():
 
 if __name__ == '__main__':
     args = getargs()
-    if not osp.exists(args.outputdir):
-        os.makedirs(args.outputdir)
+    os.makedirs(args.outputdir, exist_ok=True)
     for segfile in os.listdir(args.inputdir):
         oldname = osp.join(args.inputdir, segfile)
-        if not osp.exists(osp.join(args.outputdir,
-                                   segfile.split('-')[0])):
-            os.makedirs(osp.join(args.outputdir,
-                                   segfile.split('-')[0]))
+        os.makedirs(osp.join(args.outputdir, segfile.split('-')[0]), exist_ok=True)
         newname = osp.join(args.outputdir,
                            segfile.split('-')[0],
                            segfile.split('-')[-1].replace('data', 'predict'))
         print("rename {} to {}".format(oldname, newname))
         shutil.copyfile(oldname, newname)
     print("Done")
-
