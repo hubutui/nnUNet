@@ -1,3 +1,6 @@
+# MICCAI challenges
+For MICCAI challenges, check [here](docker/README.md).
+
 # Introduction 
 
 nnU-Net is a framework designed for medical image segmentation. Given a new dataset (that includes training cases) nnU-Net
@@ -44,7 +47,7 @@ nnU-Net was initially developed as our participation to the Medical Segmentation
  relies on the dataset to be in the same format as this challenge uses. Please refer to the readme.md in the 
  `dataset_conversion` subfolder for detailed information. Examples are also provided there. You will need to 
  convert your dataset into this format before you can continue.
- 
+
 Place your dataset either in the `raw_dataset_dir` or `splitted_4d_output_dir`, as specified in `paths.py` (depending on how you prepared it, again 
 see the readme in `dataset_conversion`). Give 
 it a name like: `TaskXX_MY_DATASET` (where XX is some number) to be consistent with the naming scheme of the Medical 
@@ -183,9 +186,9 @@ need segmentations, I recommend you start with this.
 
 You do not have to run five-fold cross-validation all the time. If you want to test single model performance, use
  *all* for `FOLD` instead of a number.
- 
+
 CAREFUL: DO NOT use fold=all when you intend to run the cascade! You must run the cross-validation in 3d_lowres so that you get proper (=not overfitted) low resolution predictions.
- 
+
 #### Manual Splitting of Data
 The cross-validation in nnU-Net splits on a per-case basis. This may sometimes not be desired, for example because 
 several training cases may be the same patient (different time steps or annotators). If this is the case, then you need to
@@ -212,7 +215,7 @@ whoever you want share them with. The recipient can then use nnU-Net for inferen
 
     You need to run all five folds of `3d_lowres`. Segmentations of the previous stage can only be generated from the 
     validation set, otherwise we would overfit.
-   
+
 3) ##### Why am I getting `RuntimeError: CUDA error: device-side assert triggered`?
 
     This error often goes along with something like `void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, 
@@ -222,7 +225,7 @@ whoever you want share them with. The recipient can then use nnU-Net for inferen
     This means that your dataset contains unexpected values in the segmentations. nnU-Net expects all labels to be 
     consecutive integers. So if your dataset has 4 classes (background and three foregound labels), then the labels 
     must be 0, 1, 2, 3 (where 0 must be background!). There cannot be any other values in the ground truth segmentations. 
-    
+
 ## Extending nnU-Net
 nnU-Net was developed in a very short amount of time and has not been planned thoroughly form the start (this is not 
 really possible for such a project). As such it is quite convoluted and complex, maybe unnessearily so. If you wish to 

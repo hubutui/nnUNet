@@ -1,3 +1,13 @@
+## nnUNet network architecture
+
+![2D](./images/nnU-Net-2D.png)
+
+2D nnUNet
+
+![3D](./images/nnU-Net-3D.png)
+
+3D nnUNet
+
 ## nnUNet Docker Container (Inference)
 
 This container takes the [nnUNet](https://github.com/hubutui/nnUNet) code and inherits from a `pytorch:pytorch` Docker image. This container is supposed to run inference only, both CPU and GPU mode for VerSe 2019 challenge. To run with GPU, you need to install and configure [nvidia-container-runtime](https://github.com/NVIDIA/nvidia-container-runtime).
